@@ -27,9 +27,14 @@ def check_electrical_interfaces (component):
     if interfaces is None:
         return
     else:
+        digital_wire_nets = []
+        interface_names = []
+        
         for interface in interfaces:
             name = interface.get("name")
             assert check_ref(name), "Electrical interface has no name in component: "+keyname
+            assert name not in interface_names, "Cannot have two interfaces with the same name \""+name+"\" in component: "+keyname
+            interface_names.append(name)
             
             interface_type = interface.get("type")
             assert check_ref(interface_type), "Electrical interface \""+name+"\" has no type in component: "+keyname
@@ -43,10 +48,13 @@ def check_electrical_interfaces (component):
                 assert check_ref(current), "Power interface \""+name+"\" has missing current in component: "+keyname
                 output = interface.get("output", "False").upper() == "TRUE"
                 input = interface.get("input", "False").upper() == "TRUE"
-                assert output != input, "Power interface \""+name+"\" has bad or missing input/output specification in component: "+keyname+". Needs to be input or output."
+                #assert output != input, "Power interface \""+name+"\" has bad or missing input/output specification in component: "+keyname+". Needs to be input or output."
+                assert input or output, "Power interface \""+name+"\" has bad or missing input/output specification in component: "+keyname+". Needs to be input or output."
             elif interface_type == "DigitalWireInterface":
                 net = interface.get("net")
                 assert check_ref(net), "Power interface \""+name+"\" has bad or missing net in component: "+keyname
+                assert net not in digital_wire_nets, "DigitalWireInterface \""+name+"\" has duplicate digital wire net \""+net+"\" in component: "+keyname
+                digital_wire_nets.append(net)
             elif interface_type == "I2CInterface":
                 role = interface.get("role")
                 assert check_ref(role), "I2CInterface interface \""+name+"\" has bad or missing role in component: "+keyname
