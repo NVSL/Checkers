@@ -44,7 +44,13 @@ def check_electrical_interfaces (component):
                 output = interface.get("output", "False").upper() == "TRUE"
                 input = interface.get("input", "False").upper() == "TRUE"
                 assert output != input, "Power interface \""+name+"\" has bad or missing input/output specification in component: "+keyname+". Needs to be input or output."
-                
+            elif interface_type == "DigitalWireInterface":
+                net = interface.get("net")
+                assert check_ref(net), "Power interface \""+name+"\" has bad or missing net in component: "+keyname
+            elif interface_type == "I2CInterface":
+                role = interface.get("role")
+                assert check_ref(role), "I2CInterface interface \""+name+"\" has bad or missing role in component: "+keyname
+                assert (role == "master") or (role == "slave"), "I2CInterface interface \""+name+"\" has bad role in component: "+keyname+". Meeds to be 'master' or 'slave' but is "+role+"."
                 
         
 def check_component (component):
