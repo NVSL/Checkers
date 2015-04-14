@@ -5,7 +5,7 @@ def check (catalog):
         
 def check_exists_and_unique (component, tag_name):
     tag = component.findall(tag_name)
-    assert len(tag) == 1, "Component "+component.get("keyname")+" must have one and only one "+tag_name+". Got: "+str(tag)+" in "+str(component.find("homedirectory").text)
+    assert len(tag) == 1, "Component "+component.get("keyname")+" must have one and only one "+tag_name+". Got: "+str(tag) +" in "+str(component.find("homedirectory").text)
     tag = tag[0]
     assert check_ref(tag), "Empty "+tag_name+" found for component."
     
