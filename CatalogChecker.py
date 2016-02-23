@@ -78,3 +78,4 @@ def check_component (component):
     check_electrical_interfaces(component)
     
     
+    
