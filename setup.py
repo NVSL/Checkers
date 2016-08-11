@@ -15,5 +15,13 @@ setup(name="Checkers",
       version=version,
       long_description=long_description,
       author="NVSL, University of California San Diego",
-      packages = find_packages()
+      packages = find_packages(),
+      entry_points={
+        'console_scripts': [
+            'checkpro = Checkers.checkpro:main',
+            'checkpro.py = Checkers.checkpro:main',
+        ]
+        },
+
+
 )
